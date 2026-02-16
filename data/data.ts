@@ -13,20 +13,20 @@ export const datas: Data[] = [
     title: "Automotive Sales Dashboard",
     description: "Analisis data end-to-end pipeline penjualan otomotif dengan visualisasi interaktif.",
     techStack: ["Python", "Pandas", "MySQL", "Google Sheets"],
-    repoLink: "https://github.com/daniruliansyah/car-sales",
+    repoLink: "https://github.com/daniruliansyah/car_sales",
   },
   {
     id: 2,
     title: "HRIS System (Sistem Kepegawaian)",
     description: "Aplikasi manajemen SDM lengkap dengan fitur penggajian dan absensi.",
     techStack: ["PHP", "Laravel", "Bootstrap", "MySQL"],
-    repoLink: "https://github.com/daniruliansyah/pkl-palawi",
+    repoLink: "https://github.com/daniruliansyah/pkl_palawi",
   },
   {
     id: 3,
     title: "NestJS Employee API",
     description: "Backend service untuk manajemen karyawan dengan otentikasi JWT.",
     techStack: ["TypeScript", "NestJS", "TypeORM"],
-    repoLink: "https://github.com/daniruliansyah/baackend-nest",
+    repoLink: "https://github.com/daniruliansyah/backend-nestjs",
   },
 ];
