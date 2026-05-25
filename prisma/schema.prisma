@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────
+// WORK EXPERIENCE
+// ─────────────────────────────────────────────────────────────
+
+model WorkExperience {
+  id           String    @id @default(uuid()) @db.Uuid
+  company_name String
+  role         String
+  location     String?
+  description  String    @db.Text
+  start_date   DateTime  @db.Date
+  end_date     DateTime? @db.Date
+  created_at   DateTime  @default(now())
+
+  // One-to-Many: satu pengalaman bisa punya banyak media
+  medias Media[]
+
+  @@map("work_experiences")
+}
+
+// ─────────────────────────────────────────────────────────────
+// PROJECTS
+// ─────────────────────────────────────────────────────────────
+
+model Project {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String
+  category    String
+  description String   @db.Text
+  project_url String?
+  github_url  String?
+  featured    Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  // Many-to-Many: satu proyek bisa pakai banyak skill (via tabel pivot)
+  skills ProjectSkill[]
+
+  // One-to-Many: satu proyek bisa punya banyak screenshot/media
+  medias Media[]
+
+  @@map("projects")
+}
+
+// ─────────────────────────────────────────────────────────────
+// SKILLS
+// ─────────────────────────────────────────────────────────────
+
+model Skill {
+  id       String @id @default(uuid()) @db.Uuid
+  name     String
+  category String
+
+  // Many-to-Many (sisi skill): satu skill bisa dipakai banyak proyek
+  projects ProjectSkill[]
+
+  @@map("skills")
+}
+
+// ─────────────────────────────────────────────────────────────
+// PROJECT_SKILLS  —  Tabel pivot Many-to-Many (Project <-> Skill)
+// ─────────────────────────────────────────────────────────────
+
+model ProjectSkill {
+  project_id String @db.Uuid
+  skill_id   String @db.Uuid
+
+  project Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skill_id], references: [id], onDelete: Cascade)
+
+  // Composite Primary Key: gabungan project_id + skill_id
+  @@id([project_id, skill_id])
+  @@map("project_skills")
+}
+
+// ─────────────────────────────────────────────────────────────
+// MEDIAS  —  Bisa milik Project atau WorkExperience (polimorfik sederhana)
+// ─────────────────────────────────────────────────────────────
+
+model Media {
+  id            String   @id @default(uuid()) @db.Uuid
+  image_url     String
+  caption       String?
+  sort_order    Int      @default(0)
+  created_at    DateTime @default(now())
+
+  // FK opsional ke projects (Cascade: hapus proyek → media ikut terhapus)
+  project_id String?  @db.Uuid
+  project    Project? @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  // FK opsional ke work_experiences (Cascade)
+  experience_id String?         @db.Uuid
+  experience    WorkExperience? @relation(fields: [experience_id], references: [id], onDelete: Cascade)
+
+  @@map("medias")
+}
+
+// ─────────────────────────────────────────────────────────────
+// CERTIFICATES
+// ─────────────────────────────────────────────────────────────
+
+model Certificate {
+  id              String    @id @default(uuid()) @db.Uuid
+  name            String
+  issuing_org     String
+  credential_id   String?
+  credential_url  String?
+  image_url       String
+  issued_date     DateTime  @db.Date
+  expiration_date DateTime? @db.Date
+
+  @@map("certificates")
+}
