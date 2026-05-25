@@ -6,7 +6,14 @@
       "Bash(node -e \"const p=require\\('./node_modules/.prisma/client/package.json'\\); console.log\\(JSON.stringify\\({exports: p.exports?.['.'], main: p.main, types: p.types}, null, 2\\)\\)\")",
       "Bash(npx tsc *)",
       "Bash(npx prisma *)",
-      "Bash(npx auth *)"
+      "Bash(npx auth *)",
+      "Bash(mkdir -p \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\_components\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\skills\\\\new\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\skills\\\\[id]\\\\edit\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\certificates\\\\new\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\certificates\\\\[id]\\\\edit\" 2>&1; echo done)",
+      "Bash(npm install *)",
+      "Bash(mkdir -p \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\experiences\\\\new\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\experiences\\\\[id]\\\\edit\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\projects\\\\new\" \"c:\\\\laragon\\\\www\\\\my-portofolio\\\\app\\\\admin\\\\projects\\\\[id]\\\\edit\" 2>&1; echo done)"
+    ],
+    "additionalDirectories": [
+      "c:\\laragon\\www\\my-portofolio\\app\\admin\\skills\\[id]",
+      "c:\\laragon\\www\\my-portofolio\\app\\admin\\experiences\\[id]"
     ]
   }
 }

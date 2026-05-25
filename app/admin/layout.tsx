@@ -23,7 +23,7 @@ export default async function AdminLayout({
       {/* Sidebar */}
       <aside className="w-56 shrink-0 bg-gray-900 flex flex-col">
         <div className="px-6 py-5 border-b border-gray-800">
-          <span className="font-bold text-lg">Admin Panel</span>
+          <span className="font-bold text-lg">Owner Panel</span>
           <p className="text-xs text-gray-400 mt-0.5 truncate">{session.user?.email}</p>
         </div>
 
