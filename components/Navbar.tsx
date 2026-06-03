@@ -1,32 +1,58 @@
-import Link from 'next/link';
-import { Github, Linkedin, Code2 } from 'lucide-react';
+import Link from "next/link";
+import { Github, Linkedin, Code2 } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+    <nav className="fixed top-0 w-full bg-[var(--nav-bg)] backdrop-blur-md border-b border-th-border z-50 transition-colors duration-200">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Logo Area */}
-        <div className="flex items-center gap-2 text-xl font-bold text-gray-900">
-          <div className="bg-blue-600 text-white p-1 rounded-lg">
+        {/* Logo */}
+        <div className="flex items-center gap-2 text-xl font-bold text-th-ink">
+          <div className="bg-th-accent text-white p-1 rounded-lg">
             <Code2 size={20} />
           </div>
           <span>Dani Ruliansyah</span>
         </div>
 
-        {/* Menu Kanan */}
-        <div className="flex items-center gap-6">
-          <Link href="#projects" className="text-gray-600 hover:text-blue-600 transition text-sm font-medium hidden sm:block">
-            Projects
-          </Link>
-          
-          {/* Social Icons */}
-          <div className="flex gap-4 border-l pl-6 border-gray-200">
-            <a href="https://github.com/daniruliansyah" target="_blank" className="text-gray-500 hover:text-gray-900 transition">
-              <Github size={20} />
+        {/* Right cluster */}
+        <div className="flex items-center gap-4 sm:gap-5">
+          {/* Nav links — hidden on mobile */}
+          <div className="hidden sm:flex items-center gap-5">
+            <Link href="#experience" className="text-th-muted hover:text-th-accent transition-colors text-sm font-medium">
+              Experience
+            </Link>
+            <Link href="#projects" className="text-th-muted hover:text-th-accent transition-colors text-sm font-medium">
+              Projects
+            </Link>
+            <Link href="#skills" className="text-th-muted hover:text-th-accent transition-colors text-sm font-medium">
+              Skills
+            </Link>
+            <Link href="#certificates" className="text-th-muted hover:text-th-accent transition-colors text-sm font-medium">
+              Certificates
+            </Link>
+          </div>
+
+          {/* Social + Theme toggle */}
+          <div className="flex items-center gap-3 border-l border-th-border pl-4 sm:pl-5">
+            <a
+              href="https://github.com/daniruliansyah"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="text-th-muted hover:text-th-ink transition-colors"
+            >
+              <Github size={19} />
             </a>
-            <a href="https://linkedin.com/in/dani-ruliansyah-1039b43aa/" target="_blank" className="text-gray-500 hover:text-blue-700 transition">
-              <Linkedin size={20} />
+            <a
+              href="https://linkedin.com/in/dani-ruliansyah-1039b43aa/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-th-muted hover:text-th-accent transition-colors"
+            >
+              <Linkedin size={19} />
             </a>
+            <ThemeToggle />
           </div>
         </div>
       </div>
