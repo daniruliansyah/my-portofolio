@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { deleteCertificate } from "./actions";
+import { deleteCertificate, moveCertificate } from "./actions";
 import { DeleteButton } from "../_components/DeleteButton";
+import { ReorderButtons } from "../_components/ReorderButtons";
 
 function formatDate(date: Date) {
   return new Date(date).toLocaleDateString("id-ID", {
@@ -13,7 +14,7 @@ function formatDate(date: Date) {
 
 export default async function CertificatesPage() {
   const certificates = await prisma.certificate.findMany({
-    orderBy: { issued_date: "desc" },
+    orderBy: [{ sort_order: "asc" }, { issued_date: "desc" }],
   });
 
   return (
@@ -38,30 +39,42 @@ export default async function CertificatesPage() {
           <table className="w-full text-sm">
             <thead className="border-b border-gray-800">
               <tr>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Nama Sertifikat</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Lembaga</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Tanggal Terbit</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Kedaluwarsa</th>
-                <th className="px-6 py-3" />
+                <th className="text-left px-4 py-3 text-gray-400 font-medium w-16">Urutan</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Nama Sertifikat</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Lembaga</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Tanggal Terbit</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Kedaluwarsa</th>
+                <th className="px-4 py-3" />
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {certificates.map((cert) => (
+              {certificates.map((cert, index) => (
                 <tr key={cert.id} className="hover:bg-gray-800/50 transition">
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600 text-xs w-4 text-center">{index + 1}</span>
+                      <ReorderButtons
+                        itemId={cert.id}
+                        isFirst={index === 0}
+                        isLast={index === certificates.length - 1}
+                        moveAction={moveCertificate}
+                      />
+                    </div>
+                  </td>
+                  <td className="px-4 py-4">
                     <p className="text-white font-medium">{cert.name}</p>
                     {cert.credential_id && (
                       <p className="text-gray-500 text-xs mt-0.5">ID: {cert.credential_id}</p>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-gray-300">{cert.issuing_org}</td>
-                  <td className="px-6 py-4 text-gray-400">{formatDate(cert.issued_date)}</td>
-                  <td className="px-6 py-4 text-gray-400">
+                  <td className="px-4 py-4 text-gray-300">{cert.issuing_org}</td>
+                  <td className="px-4 py-4 text-gray-400">{formatDate(cert.issued_date)}</td>
+                  <td className="px-4 py-4 text-gray-400">
                     {cert.expiration_date ? formatDate(cert.expiration_date) : (
                       <span className="text-green-500 text-xs">Tidak kedaluwarsa</span>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     <div className="flex items-center gap-4 justify-end">
                       <Link
                         href={`/admin/certificates/${cert.id}/edit`}

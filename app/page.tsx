@@ -9,7 +9,7 @@ import CertificatesSection from "@/components/sections/CertificatesSection";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [workExperiences, projects, skills, certificates] = await Promise.all([
+  const [workExperiences, projects, skills, certificates, adminUser] = await Promise.all([
     prisma.workExperience.findMany({
       include: { medias: { orderBy: { sort_order: "asc" } } },
       orderBy: { start_date: "desc" },
@@ -25,16 +25,21 @@ export default async function Home() {
       orderBy: [{ category: "asc" }, { name: "asc" }],
     }),
     prisma.certificate.findMany({
-      orderBy: { issued_date: "desc" },
+      orderBy: [{ sort_order: "asc" }, { issued_date: "desc" }],
+    }),
+    prisma.user.findFirst({
+      select: { profile_photo_url: true },
     }),
   ]);
+
+  const profilePhotoUrl = adminUser?.profile_photo_url ?? "/images/profile.png";
 
   return (
     <div className="min-h-screen bg-th-bg text-th-ink">
       <Navbar />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6">
-        <HeroSection />
+        <HeroSection profilePhotoUrl={profilePhotoUrl} />
         <ExperienceSection workExperiences={workExperiences} />
         <ProjectsSection projects={projects} />
         <SkillsSection skills={skills} />

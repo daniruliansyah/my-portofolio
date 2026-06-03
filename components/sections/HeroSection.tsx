@@ -4,7 +4,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Github, GraduationCap } from "lucide-react";
 import Image from "next/image";
 
-export default function HeroSection() {
+interface Props {
+  profilePhotoUrl: string;
+}
+
+export default function HeroSection({ profilePhotoUrl }: Props) {
   return (
     <section className="pt-28 pb-20 flex flex-col items-center text-center">
       <motion.div
@@ -20,7 +24,7 @@ export default function HeroSection() {
             style={{ background: "var(--bg-primary)", padding: "3px" }}>
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
-                src="/images/profile.png"
+                src={profilePhotoUrl}
                 alt="Foto Profil Dani Ruliansyah"
                 fill
                 className="object-cover rounded-full"
