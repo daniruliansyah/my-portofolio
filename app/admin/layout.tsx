@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/admin/projects", label: "Proyek" },
   { href: "/admin/skills", label: "Skill" },
   { href: "/admin/certificates", label: "Sertifikat" },
+  { href: "/admin/settings", label: "Pengaturan" },
 ];
 
 export default async function AdminLayout({

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { deleteProject, moveProject } from "./actions";
 import { DeleteButton } from "../_components/DeleteButton";
-import { ReorderButtons } from "./_components/ReorderButtons";
+import { ReorderButtons } from "../_components/ReorderButtons";
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
@@ -50,7 +50,7 @@ export default async function ProjectsPage() {
                     <div className="flex items-center gap-2">
                       <span className="text-gray-600 text-xs w-4 text-center">{index + 1}</span>
                       <ReorderButtons
-                        projectId={project.id}
+                        itemId={project.id}
                         isFirst={index === 0}
                         isLast={index === projects.length - 1}
                         moveAction={moveProject}

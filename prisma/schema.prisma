@@ -11,11 +11,12 @@ datasource db {
 // ─────────────────────────────────────────────────────────────
 
 model User {
-  id         String   @id @default(uuid()) @db.Uuid
-  name       String
-  email      String   @unique
-  password   String
-  created_at DateTime @default(now())
+  id                String   @id @default(uuid()) @db.Uuid
+  name              String
+  email             String   @unique
+  password          String
+  profile_photo_url String?
+  created_at        DateTime @default(now())
 
   @@map("users")
 }
@@ -130,6 +131,7 @@ model Certificate {
   image_url       String
   issued_date     DateTime  @db.Date
   expiration_date DateTime? @db.Date
+  sort_order      Int       @default(0)
 
   @@map("certificates")
 }

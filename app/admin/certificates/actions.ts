@@ -96,6 +96,30 @@ export async function updateCertificate(id: string, _prevState: unknown, formDat
   redirect("/admin/certificates");
 }
 
+export async function moveCertificate(id: string, direction: "up" | "down") {
+  const certificates = await prisma.certificate.findMany({
+    orderBy: [{ sort_order: "asc" }, { issued_date: "desc" }],
+    select: { id: true, sort_order: true },
+  });
+
+  const currentIndex = certificates.findIndex((c) => c.id === id);
+  if (currentIndex === -1) return;
+
+  const swapIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+  if (swapIndex < 0 || swapIndex >= certificates.length) return;
+
+  [certificates[currentIndex], certificates[swapIndex]] = [certificates[swapIndex], certificates[currentIndex]];
+
+  await prisma.$transaction(
+    certificates.map((c, i) =>
+      prisma.certificate.update({ where: { id: c.id }, data: { sort_order: i } })
+    )
+  );
+
+  revalidatePath("/admin/certificates");
+  revalidatePath("/");
+}
+
 export async function deleteCertificate(id: string) {
   const cert = await prisma.certificate.findUnique({ where: { id }, select: { image_url: true } });
 
