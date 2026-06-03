@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { EditProjectForm } from "./_form";
 import { MediaSection } from "@/app/admin/_components/MediaSection";
-import { addProjectMedia, deleteProjectMedia } from "../../actions";
+import { addProjectMedia, deleteProjectMedia, setProjectMediaAsCover } from "../../actions";
 import type { Skill } from "@prisma/client";
 
 function groupByCategory(skills: Skill[]) {
@@ -57,6 +57,7 @@ export default async function EditProjectPage({
         medias={project.medias}
         uploadAction={uploadAction}
         deleteAction={deleteProjectMedia}
+        setCoverAction={setProjectMediaAsCover}
       />
     </div>
   );

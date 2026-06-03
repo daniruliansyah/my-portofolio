@@ -121,6 +121,53 @@ export async function addProjectMedia(
   return { error: "" };
 }
 
+export async function moveProject(id: string, direction: "up" | "down") {
+  const projects = await prisma.project.findMany({
+    orderBy: [{ sort_order: "asc" }, { created_at: "asc" }],
+    select: { id: true, sort_order: true },
+  });
+
+  const currentIndex = projects.findIndex((p) => p.id === id);
+  if (currentIndex === -1) return;
+
+  const swapIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+  if (swapIndex < 0 || swapIndex >= projects.length) return;
+
+  [projects[currentIndex], projects[swapIndex]] = [projects[swapIndex], projects[currentIndex]];
+
+  await prisma.$transaction(
+    projects.map((p, i) =>
+      prisma.project.update({ where: { id: p.id }, data: { sort_order: i } })
+    )
+  );
+
+  revalidatePath("/admin/projects");
+  revalidatePath("/");
+}
+
+export async function setProjectMediaAsCover(mediaId: string) {
+  const media = await prisma.media.findUnique({
+    where: { id: mediaId },
+    select: { project_id: true },
+  });
+
+  if (!media?.project_id) return;
+
+  await prisma.$transaction([
+    prisma.media.updateMany({
+      where: { project_id: media.project_id },
+      data: { sort_order: 0 },
+    }),
+    prisma.media.update({
+      where: { id: mediaId },
+      data: { sort_order: -1 },
+    }),
+  ]);
+
+  revalidatePath(`/admin/projects/${media.project_id}/edit`);
+  revalidatePath("/");
+}
+
 export async function deleteProjectMedia(mediaId: string) {
   const media = await prisma.media.findUnique({
     where: { id: mediaId },

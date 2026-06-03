@@ -1,3 +1,112 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─── LIGHT (default) ──────────────────────────────────────── */
+:root,
+.light {
+  --bg-primary:   #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #111111;
+  --text-muted:   #707072;
+  --border:       #e5e5e5;
+  --card-bg:      #ffffff;
+  --nav-bg:       rgba(255, 255, 255, 0.85);
+  --accent:       #004D98;
+  --accent-hover: #003d7a;
+  --accent2:      #A50044;
+  --accent3:      #EDBB00;
+  --badge-bg:     #eff6ff;
+  --badge-text:   #1d4ed8;
+  --ring:         rgba(0, 77, 152, 0.25);
+}
+
+/* ─── DARK ─────────────────────────────────────────────────── */
+.dark {
+  --bg-primary:   #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-muted:   #94a3b8;
+  --border:       #334155;
+  --card-bg:      #1e293b;
+  --nav-bg:       rgba(15, 23, 42, 0.85);
+  --accent:       #60a5fa;
+  --accent-hover: #3b82f6;
+  --accent2:      #f472b6;
+  --accent3:      #fbbf24;
+  --badge-bg:     #1e3a5f;
+  --badge-text:   #93c5fd;
+  --ring:         rgba(96, 165, 250, 0.25);
+}
+
+/* ─── VISCABARCA ────────────────────────────────────────────── */
+.viscabarca {
+  --bg-primary:   #0a0e1a;
+  --bg-secondary: #0d1528;
+  --text-primary: #f0f4ff;
+  --text-muted:   #8899bb;
+  --border:       #1a2744;
+  --card-bg:      #0d1528;
+  --nav-bg:       rgba(10, 14, 26, 0.92);
+  --accent:       #004D98;
+  --accent-hover: #0062c4;
+  --accent2:      #A50044;
+  --accent3:      #EDBB00;
+  --badge-bg:     #0a1a30;
+  --badge-text:   #60a5fa;
+  --ring:         rgba(0, 77, 152, 0.3);
+}
+
+/* ─── BASE ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.15s ease;
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─── SELECTION ─────────────────────────────────────────────── */
+::selection {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+/* ─── VISCABARCA: Section accent bar gradient ───────────────── */
+.viscabarca .section-accent-bar {
+  background: linear-gradient(to bottom, #004D98, #A50044);
+}
+
+/* ─── VISCABARCA: Section rule gradient ─────────────────────── */
+.viscabarca .section-rule {
+  background: linear-gradient(to right, #004D98 0%, #A50044 50%, transparent 100%);
+}
+
+/* ─── VISCABARCA: Skill badge yellow hover ──────────────────── */
+.viscabarca .barca-badge:hover {
+  border-color: #EDBB00 !important;
+  color: #EDBB00 !important;
+}
+
+/* ─── VISCABARCA: Timeline line gradient ────────────────────── */
+.viscabarca .timeline-line {
+  background: linear-gradient(to bottom, #004D98, #A50044);
+  border: none;
+  width: 2px;
+}
+
+/* ─── VISCABARCA: Card left accent on hover ─────────────────── */
+.viscabarca .barca-card:hover {
+  border-left-color: #004D98 !important;
+}

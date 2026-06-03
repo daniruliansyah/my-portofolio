@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { deleteProject } from "./actions";
+import { deleteProject, moveProject } from "./actions";
 import { DeleteButton } from "../_components/DeleteButton";
+import { ReorderButtons } from "./_components/ReorderButtons";
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
-    orderBy: { created_at: "desc" },
+    orderBy: [{ sort_order: "asc" }, { created_at: "asc" }],
     include: {
       _count: { select: { medias: true, skills: true } },
     },
@@ -33,30 +34,42 @@ export default async function ProjectsPage() {
           <table className="w-full text-sm">
             <thead className="border-b border-gray-800">
               <tr>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Judul</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Kategori</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Skill</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Gambar</th>
-                <th className="text-left px-6 py-3 text-gray-400 font-medium">Featured</th>
-                <th className="px-6 py-3" />
+                <th className="text-left px-4 py-3 text-gray-400 font-medium w-16">Urutan</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Judul</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Kategori</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Skill</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Gambar</th>
+                <th className="text-left px-4 py-3 text-gray-400 font-medium">Featured</th>
+                <th className="px-4 py-3" />
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {projects.map((project) => (
+              {projects.map((project, index) => (
                 <tr key={project.id} className="hover:bg-gray-800/50 transition">
-                  <td className="px-6 py-4 text-white font-medium">{project.title}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600 text-xs w-4 text-center">{index + 1}</span>
+                      <ReorderButtons
+                        projectId={project.id}
+                        isFirst={index === 0}
+                        isLast={index === projects.length - 1}
+                        moveAction={moveProject}
+                      />
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-white font-medium">{project.title}</td>
+                  <td className="px-4 py-4">
                     <span className="px-2 py-1 rounded-md bg-gray-800 text-gray-300 text-xs">
                       {project.category}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-400 text-xs">
+                  <td className="px-4 py-4 text-gray-400 text-xs">
                     {project._count.skills} skill
                   </td>
-                  <td className="px-6 py-4 text-gray-400 text-xs">
+                  <td className="px-4 py-4 text-gray-400 text-xs">
                     {project._count.medias} gambar
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     {project.featured ? (
                       <span className="px-2 py-1 rounded-md bg-yellow-500/20 text-yellow-400 text-xs">
                         Ya
@@ -65,7 +78,7 @@ export default async function ProjectsPage() {
                       <span className="text-gray-600 text-xs">—</span>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     <div className="flex items-center gap-4 justify-end">
                       <Link
                         href={`/admin/projects/${project.id}/edit`}

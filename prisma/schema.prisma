@@ -52,6 +52,7 @@ model Project {
   project_url String?
   github_url  String?
   featured    Boolean  @default(false)
+  sort_order  Int      @default(0)
   created_at  DateTime @default(now())
 
   // Many-to-Many: satu proyek bisa pakai banyak skill (via tabel pivot)
